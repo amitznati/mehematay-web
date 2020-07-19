@@ -1,0 +1,43 @@
+@import "src/styles/abstracts/variables";
+@import "src/styles/abstracts/mixing";
+.cards-swift {
+  position: relative;
+  display: inline-flex;
+  perspective: 1500px;
+  width: 100%;
+  height: 100%;
+  &-container {
+    width: 100%;
+  }
+  &--item {
+    position: absolute;
+    height: 100%;
+    width: 90%;
+    left: 5%;
+    z-index: 1;
+    display: inline-table;
+    transition: all .5s;
+    visibility: hidden;
+    opacity: 0;
+    &.active-down1 {
+      opacity: .8;
+      left: calc(-5px + -9%);
+      z-index: 2;
+      transform: rotate3d(0, 1, 0, 10deg) scale3d(0.7, 0.9, 1);
+      visibility: visible;
+    }
+    &.active-up1 {
+      opacity: .8;
+      left: calc(5px + 19%);
+      z-index: 2;
+      transform: rotate3d(0, 1, 0, -10deg) scale3d(0.7, 0.9, 1);
+      visibility: visible;
+    }
+    &.active-up0 {
+      opacity: 1;
+      z-index: 3;
+      //box-shadow: $btn-active-shadow;
+      visibility: visible;
+    }
+  }
+}
