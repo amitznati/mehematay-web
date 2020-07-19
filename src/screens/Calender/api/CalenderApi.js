@@ -1,8 +1,7 @@
 import BaseApi from '../../../sdk/BaseApi';
 import selectors from './CalenderSelectors';
 import Hebcal from 'hebcal';
-// eslint-disable-next-line no-unused-vars
-import {monthsArray, monthsArrayHe} from '../../../commonComponents/constants';
+import {monthsArrayHe} from '../../../commonComponents/constants';
 
 export const ActionTypes = {
   SET_NAVIGATION_DATE: 'SET_NAVIGATION_DATE',
@@ -20,23 +19,24 @@ export default class CalenderApi extends BaseApi {
   loadCalender = async () => {
     const navigationDate = this.getNavigationDateSelector();
     const startDate = new Date(navigationDate);
-    const startMonth = startDate.getMonth();
-    startDate.setDate(1);
-    startDate.setDate(0 - startDate.getDay());
+    startDate.setMonth(startDate.getMonth() - 2);
     const today = new Date();
-    let cont = true;
+
     const year = [];
-    Hebcal.range(0, 11).forEach(() => {
+    Hebcal.range(0, 4).forEach(month => {
+      const startMonth = startDate.getMonth();
+      startDate.setDate(1);
+      startDate.setDate(0 - startDate.getDay());
       const weekDay = [];
-      while (cont) {
+      Hebcal.range(0, 5).forEach(week => {
+        console.log(startMonth);
         weekDay.push(
           Hebcal.range(0, 6).map(() => {
             startDate.setDate(startDate.getDate() + 1);
             return this.getWeekDays(startDate, today);
           })
         );
-        cont = startDate.getMonth() <= startMonth;
-      }
+      });
       year.push(weekDay);
     });
 

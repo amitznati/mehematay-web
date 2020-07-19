@@ -4,7 +4,7 @@ import {mapComponentProps} from './Calender.propsMappar';
 
 export default function CalenderComponent(props) {
   React.useEffect(() => {props.loadCalender();}, []);
-  if (!props.calenderWeeks.length) {
+  if (!props.calenderYear.length) {
     return <div >loading...</div>;
   }
   return <CalenderMainView {...mapComponentProps(props)} />;

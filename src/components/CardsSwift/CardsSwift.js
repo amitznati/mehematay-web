@@ -6,14 +6,13 @@ const CardsSwift = ({
   data,
   activeIndex,
   renderItem,
-  height
 }) => {
   const getItemClass = (index) =>
     activeIndex - index >= 0
       ? `up${activeIndex - index}`
       : `down${index - activeIndex}`;
   return (
-    <div style={{ height: `${height}rem` }} className="cards-swift-container">
+    <div className="cards-swift-container">
       <div className="cards-swift">
         {data.map((item, i) => (
           <div

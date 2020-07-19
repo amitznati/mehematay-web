@@ -32,7 +32,11 @@ const CalenderWeek = ({week, onSelectDate}) => {
 
 const renderCalender = (weeks, month, onSelectDate) => {
   return (
-    <div className="calendar">
+    <div className="calendar-month">
+      <div className="calendar-header">
+        <span className="calendar-header-month">{monthsArrayHe[weeks[2][0].date.month]}</span>
+        <p className="calendar-header-year">2018</p>
+      </div>
       <div className="calendar-week calendar-week-days">
         {heDaysLong.map(day => (<span key={day} className="day-name">{day}</span>))}
       </div>
@@ -41,7 +45,7 @@ const renderCalender = (weeks, month, onSelectDate) => {
   );
 };
 const Calender = ({ calenderYear, onSelectDate, navigationDate }) => {
-  const [activeMonth, setActiveMonth] = React.useState(navigationDate.getMonth());
+  const [activeMonth, setActiveMonth] = React.useState(2);
   return (
     <div className="calendar-container">
       <div className="calender-sidebar">
@@ -55,14 +59,9 @@ const Calender = ({ calenderYear, onSelectDate, navigationDate }) => {
           </div>
         ))}
       </div>
-      <div className="calendar-header">
-        <span className="calendar-header-month">{monthsArrayHe[activeMonth]}</span>
-        <p className="calendar-header-year">2018</p>
-      </div>
       <CardsSwift
         data={calenderYear}
         activeIndex={activeMonth}
-        height={90}
         renderItem={(weeks, index) => renderCalender(weeks, monthsArrayHe[index], onSelectDate)}
       >
       </CardsSwift>
