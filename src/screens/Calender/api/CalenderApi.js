@@ -23,17 +23,19 @@ export default class CalenderApi extends BaseApi {
     const today = new Date();
 
     const year = [];
-    Hebcal.range(0, 4).forEach(month => {
+    Hebcal.range(0, 4).forEach((/*month*/) => {
       const startMonth = startDate.getMonth();
       startDate.setDate(1);
       startDate.setDate(0 - startDate.getDay());
       const weekDay = [];
-      Hebcal.range(0, 5).forEach(week => {
+      Hebcal.range(0, 5).forEach((/*week*/) => {
         console.log(startMonth);
         weekDay.push(
           Hebcal.range(0, 6).map(() => {
             startDate.setDate(startDate.getDate() + 1);
-            return this.getWeekDays(startDate, today);
+            const day = this.getWeekDays(startDate, today);
+            day.isDisable = startDate.getMonth() !== startMonth;
+            return day;
           })
         );
       });
@@ -41,7 +43,6 @@ export default class CalenderApi extends BaseApi {
     });
 
     this.setCalenderYear(year);
-    //const id = setTimeout( () => {this.setCalenderWeeks(weekDay); clearTimeout(id);console.log('done loading cal');}, 5000);
   };
 
   getEventText = (heDate) => {
@@ -64,9 +65,7 @@ export default class CalenderApi extends BaseApi {
   };
 
   getWeekDays = (startDate, today) => {
-    const navigationDate = this.getNavigationDateSelector();
     const selectedDate = this.getSelectedDateSelector();
-    const isDisable = startDate.getMonth() !== navigationDate.getMonth();
     const date = {
       year: startDate.getFullYear(),
       month: startDate.getMonth() + 1,
@@ -87,7 +86,6 @@ export default class CalenderApi extends BaseApi {
       date,
       isToday,
       isSelected,
-      isDisable,
       eventText,
       heDate: Hebcal.gematriya(HDate.day),
       onSelect: this.onSelectDate,

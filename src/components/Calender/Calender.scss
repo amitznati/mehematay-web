@@ -2,6 +2,9 @@
 @import './src/styles/abstracts/mixing';
 
 .calendar {
+  &-main {
+    width: 80%;
+  }
   &-month {
     display: flex;
     flex-direction: column;
@@ -12,6 +15,7 @@
     border-radius: 1rem;
     overflow: hidden;
     box-shadow: $btn-active-shadow;
+    padding: .4rem 0;
   }
   &-container {
     width: 100%;
@@ -60,6 +64,9 @@
   &-week {
     display: flex;
     justify-content: center;
+    &-days {
+      padding: 0 5rem;
+    }
   }
 }
 
@@ -108,11 +115,12 @@
     box-shadow: none;
     width: calc(100% / 7);
   }
-
-  &:hover {
-    box-shadow: $btn-hover-shadow;
-    transform: scale(1.1);
-    z-index: 3;
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: $btn-hover-shadow;
+      transform: scale(1.1);
+      z-index: 3;
+    }
   }
 
   &:nth-of-type(7n + 7) {

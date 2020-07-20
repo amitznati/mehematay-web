@@ -33,13 +33,6 @@ const CalenderWeek = ({week, onSelectDate}) => {
 const renderCalender = (weeks, month, onSelectDate) => {
   return (
     <div className="calendar-month">
-      <div className="calendar-header">
-        <span className="calendar-header-month">{monthsArrayHe[weeks[2][0].date.month]}</span>
-        <p className="calendar-header-year">2018</p>
-      </div>
-      <div className="calendar-week calendar-week-days">
-        {heDaysLong.map(day => (<span key={day} className="day-name">{day}</span>))}
-      </div>
       {weeks.map((week, i) => <CalenderWeek key={`week-${i}`} {...{week, onSelectDate}} />)}
     </div>
   );
@@ -59,12 +52,23 @@ const Calender = ({ calenderYear, onSelectDate, navigationDate }) => {
           </div>
         ))}
       </div>
-      <CardsSwift
-        data={calenderYear}
-        activeIndex={activeMonth}
-        renderItem={(weeks, index) => renderCalender(weeks, monthsArrayHe[index], onSelectDate)}
-      >
-      </CardsSwift>
+      <div className="calendar-main">
+        <div className="calendar-header">
+          <span className="calendar-header-month">תמוז</span>
+          <p className="calendar-header-year">2018</p>
+        </div>
+        <div className="calendar-week calendar-week-days">
+          {heDaysLong.map(day => (<span key={day} className="day-name">{day}</span>))}
+        </div>
+        <CardsSwift
+          data={calenderYear}
+          activeIndex={activeMonth}
+          renderItem={(weeks, index) => renderCalender(weeks, monthsArrayHe[index], onSelectDate)}
+          onSwiftLeft={() => setActiveMonth(activeMonth + 1)}
+          onSwiftRight={() => setActiveMonth(activeMonth - 1)}
+        >
+        </CardsSwift>
+      </div>
     </div>
   );
 };
