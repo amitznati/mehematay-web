@@ -1,10 +1,11 @@
 import React from 'react';
-import Calender from '../../../Calender/widget/Calender.connect';
+import {Calendar} from 'az-ui-library';
 
 export default function DayTimesMainView() {
+  const [selectedDate, setSelectedDate] = React.useState(new Date());
   return (
-    <div>
-      <Calender />
+    <div style={{margin: 'auto'}}>
+      <Calendar selectedDate={selectedDate} onSelectDate={setSelectedDate} />
     </div>
   );
 }

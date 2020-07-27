@@ -64,7 +64,7 @@ export default class CalenderApi extends BaseApi {
     return text;
   };
 
-  getWeekDays = (startDate, today) => {
+  getWeekDays = async (startDate, today) => {
     const selectedDate = this.getSelectedDateSelector();
     const date = {
       year: startDate.getFullYear(),
