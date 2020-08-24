@@ -22,7 +22,7 @@
     "react-scripts": "^3.4.0",
     "redux": "^4.0.4",
     "reselect": "^4.0.0",
-    "az-ui-library": "^1.0.0"
+    "az-ui-library": "file:../az-ui-library"
   },
   "scripts": {
     "eslint": "eslint \"./src/**/*.js\"",

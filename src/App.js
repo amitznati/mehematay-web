@@ -21,13 +21,13 @@ const theme = {
     primaryDark: '#4b191a',
     primaryLight: '#9c6364',
 
-    secondary: '#a38e27',
-    secondaryDark: '#5e521a',
-    secondaryLight: '#F3EDD0',
+    secondary: '#debb0b',
+    secondaryDark: '#675603',
+    secondaryLight: '#dbc76a',
 
     tertiary: '#79d239',
-    tertiaryLight: '#caecb3',
     tertiaryDark: '#2d6107',
+    tertiaryLight: '#caecb3',
   }
 };
 

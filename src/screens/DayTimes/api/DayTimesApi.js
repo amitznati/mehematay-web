@@ -212,22 +212,23 @@ export default class DayTimesApi extends BaseApi {
     await this.loadSunTimes(location.coords);
   };
 
-  initialDate = () => {
-    const navigationDate = new Date();
-    navigationDate.setHours(6);
-    this.setSelectedDate(navigationDate);
-    this.setNavigationDate(navigationDate);
-  };
+  // initialDate = () => {
+  //   const navigationDate = new Date();
+  //   navigationDate.setHours(6);
+  //   this.setSelectedDate(navigationDate);
+  //   this.setNavigationDate(navigationDate);
+  // };
 
   setErrorMsg = () => {};
 
   loadSunTimesCurrentLocation = async () => {
-    this.initialDate();
+    //this.initialDate();
+    let defaultLocation = {
+      latitude: 31.0579367,
+      longitude: 35.0389234,
+    };
     if (config.useMocks) {
-      this.APIsInstances.SearchLocationApi.getCityLocationByCoords({
-        latitude: 31.0579367,
-        longitude: 35.0389234,
-      }).then(this.onSelectLocation);
+      this.APIsInstances.SearchLocationApi.getCityLocationByCoords(defaultLocation).then(this.onSelectLocation);
     } else {
       const status = 'geolocation' in navigator;
       if (!status) {

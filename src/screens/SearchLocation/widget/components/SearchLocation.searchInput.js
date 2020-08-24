@@ -26,27 +26,4 @@ export const SearchInput = ({onSearch}) => {
   );
 };
 
-const styles = {
-  container: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-  },
-  buttonStyle: {
-    flex: 1,
-    borderRadius: 0,
-    padding: 0,
-    margin: 0,
-    height: 50,
-    borderBottomLeftRadius: 20,
-  },
-  inputStyle: {
-    flex: 11,
-    height: 50,
-    borderRadius: 0,
-    padding: 0,
-    margin: 0,
-    borderTopRightRadius: 20,
-  },
-};
 export default SearchInput;
