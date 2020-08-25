@@ -1,13 +1,13 @@
 import React from 'react';
-import {Calendar, DailyTimeLine, SearchLocation } from 'az-ui-library';
+import {Calendar, DailyTimeLine } from 'az-ui-library';
+import SearchLocation from '../../../SearchLocation/widget/SearchLocation.connect';
 
-export default function DayTimesMainView({dayTimes}) {
-  const [selectedDate, setSelectedDate] = React.useState(new Date());
+export default function DayTimesMainView({dayTimes, onDateChange, selectedDate, onSelectLocation, selectedLocation}) {
   return (
     <div>
       <div>
-        <SearchLocation onSearch={() => {}} onSelectLocation={() => {}} />
-        <Calendar selectedDate={selectedDate} onSelectDate={setSelectedDate} />
+        <SearchLocation onSelectLocation={onSelectLocation} selectedLocation={selectedLocation} />
+        <Calendar selectedDate={selectedDate} onSelectDate={onDateChange} />
       </div>
       <DailyTimeLine dayTimes={dayTimes} />
     </div>

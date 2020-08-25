@@ -1,64 +1,15 @@
 import React from 'react';
-import {IconButton} from '../../../../commonComponents';
-import SearchInput from './SearchLocation.searchInput';
+import {SearchLocation as UISearchLocation} from 'az-ui-library';
 
-export default function SearchLocationView(props) {
-  const {locationResults, searchLocation, onBack, onSelect} = props;
-
-  const onSelectLocation = location => {
-    onSelect(location);
-  };
-
-  const renderLocationItem = location => {
-    return (
-      <div
-        key={location.formattedName}
-        onClick={() => onSelectLocation(location)}>
-        <p>{location.formattedName}</p>
-      </div>
-    );
-  };
-
+export default function SearchLocationMainView({searchLocation, locationResults, onSelectLocation, selectedLocation}) {
   return (
     <div>
-      <IconButton
-        name="arrow-left-circle-outline"
-        pack="material-community"
-        size={50}
-        wrapperProps={{
-          onClick: () => onBack(),
-          style: styles.iconViewStyle,
-        }}
+      <UISearchLocation
+        onSearch={searchLocation}
+        searchResults={locationResults}
+        onSelectLocation={onSelectLocation}
+        selectedLocation={selectedLocation}
       />
-      <p>החיפוש לפי ערים בלבד!</p>
-      <SearchInput onSearch={searchLocation} />
-      <div>
-        {locationResults.map(renderLocationItem)}
-      </div>
     </div>
   );
 }
-
-const styles = {
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'stretch',
-    paddingLeft: 24,
-    paddingRight: 24,
-  },
-  iconViewStyle: {
-    alignSelf: 'flex-end',
-  },
-  locationContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    margin: 4,
-  },
-  locationText: {
-    fontSize: 20,
-  },
-};

@@ -28,9 +28,9 @@ export default class SearchLocationApi extends BaseApi {
       return [];
     }
     return results
-      .filter(loc => loc.components._type === 'city' && loc.components.city)
+      .filter(loc => loc.components._type === 'city' && (loc.components.city || loc.components.town))
       .map(loc => ({
-        formattedName: loc.components.city,
+        formattedName: loc.components.city || loc.components.town,
         timezone: loc.annotations.timezone.name,
         coords: {
           longitude: loc.geometry.lng,

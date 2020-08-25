@@ -221,6 +221,16 @@ export default class DayTimesApi extends BaseApi {
 
   setErrorMsg = () => {};
 
+  existLocationInStorage = () => {
+    const existingLocation = localStorage.getItem('prevLocation');
+    if (existingLocation) {
+      const location = JSON.parse(existingLocation);
+      this.onSelectLocation(location);
+      return true;
+    }
+    return false;
+  }
+
   loadSunTimesCurrentLocation = async () => {
     //this.initialDate();
     let defaultLocation = {
@@ -229,7 +239,7 @@ export default class DayTimesApi extends BaseApi {
     };
     if (config.useMocks) {
       this.APIsInstances.SearchLocationApi.getCityLocationByCoords(defaultLocation).then(this.onSelectLocation);
-    } else {
+    } else if (!this.existLocationInStorage()) {
       const status = 'geolocation' in navigator;
       if (!status) {
         this.setErrorMsg('Permission to access location was denied');
@@ -237,7 +247,10 @@ export default class DayTimesApi extends BaseApi {
         navigator.geolocation.getCurrentPosition(location => {
           this.APIsInstances.SearchLocationApi.getCityLocationByCoords(
             location.coords,
-          ).then(this.onSelectLocation);
+          ).then((loc) => {
+            localStorage.setItem('prevLocation', JSON.stringify(loc));
+            this.onSelectLocation(loc);
+          });
         });
       }
     }
@@ -251,6 +264,13 @@ export default class DayTimesApi extends BaseApi {
       await this.loadSunTimes(location.coords, selectedDate);
     }
   };
+
+  setSelectedDate = (selectedDate) => {
+    this.dispatchStoreAction({
+      type: ActionTypes.SET_SELECTED_DATE,
+      payload: selectedDate,
+    });
+  }
 
   setSelectedLocation = selectedLocation => {
     this.dispatchStoreAction({
@@ -267,6 +287,10 @@ export default class DayTimesApi extends BaseApi {
   getSelectedLocationSelector = () => {
     return selectors.getSelectedLocationSelector(this.store.getState());
   };
+
+  getSelectedDateSelector = () => {
+    return selectors.getSelectedDateSelector(this.store.getState());
+  }
 
   getLoadCurrentLocationTimesErrorSelector = () => {
     return selectors.getLoadCurrentLocationTimesErrorSelector(

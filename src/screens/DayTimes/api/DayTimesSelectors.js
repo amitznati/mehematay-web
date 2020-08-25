@@ -38,10 +38,18 @@ export const getLoadCurrentLocationTimesErrorSelector = createSelector(
   },
 );
 
+export const getSelectedDateSelector = createSelector(
+  sliceSelector,
+  slice => {
+    return slice.selectedDate;
+  },
+);
+
 export default {
   getDayTimesSelector,
   getSelectedCoordsSelector,
   getSeLocationNameSelector,
   getSelectedLocationSelector,
   getLoadCurrentLocationTimesErrorSelector,
+  getSelectedDateSelector
 };

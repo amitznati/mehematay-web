@@ -37,6 +37,12 @@ const reducer = (state = initialState, action) => {
     };
     break;
   }
+  case ActionTypes.SET_SELECTED_DATE:
+    newState = {
+      ...state,
+      selectedDate: payload
+    };
+    break;
   default:
     return newState;
   }
