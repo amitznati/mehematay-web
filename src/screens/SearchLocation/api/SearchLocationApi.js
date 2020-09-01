@@ -1,6 +1,7 @@
 import BaseApi from '../../../sdk/BaseApi';
 import selectors from './SearchLocationSelectors';
 import SimpleServices from '../../../sdk/services/SimpleServices';
+import config from '../../../sdk/config';
 
 export const ActionTypes = {
   SEARCH_LOCATION: 'SEARCH_LOCATION',
@@ -21,6 +22,29 @@ export default class SearchLocationApi extends BaseApi {
       this._onSuccessSearchLocation,
     );
   };
+
+  searchMyLocation = (successCallback, errorCallback) => {
+    let defaultLocation = {
+      latitude: 31.0579367,
+      longitude: 35.0389234,
+    };
+    if (config.useMocks) {
+      this.APIsInstances.SearchLocationApi.getCityLocationByCoords(defaultLocation).then(successCallback);
+    } else {
+      const status = 'geolocation' in navigator;
+      if (!status) {
+        errorCallback('Permission to access location was denied');
+      } else {
+        navigator.geolocation.getCurrentPosition(location => {
+          this.APIsInstances.SearchLocationApi.getCityLocationByCoords(
+            location.coords,
+          ).then((loc) => {
+            successCallback(loc);
+          });
+        });
+      }
+    }
+  }
 
   _onSuccessSearchLocation(res) {
     const results = res && res.data && res.data.results;

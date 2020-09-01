@@ -2,6 +2,7 @@
   "name": "mehematay-web",
   "version": "0.0.1",
   "private": false,
+  "homepage": "./",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@material-ui/icons": "^4.9.1",
@@ -29,7 +30,7 @@
     "start:dev": "react-app-rewired start",
     "start": "react-scripts start",
     "build:dev": "react-app-rewired build",
-    "build": "npm-run-all eslint build:dev",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

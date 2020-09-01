@@ -3,8 +3,7 @@ import moment from 'moment-timezone';
 import Hebcal from 'hebcal';
 import BaseApi from '../../../sdk/BaseApi';
 import selectors from './DayTimesSelectors';
-import config from '../../../sdk/config';
-import {monthsArray, monthsArrayHe} from '../../../commonComponents/constants';
+import {monthsArray, monthsArrayHe, heDaysLong} from '../../../commonComponents/constants';
 
 export const ActionTypes = {
   LOAD_SUN_TIMES: 'LOAD_SUN_TIMES',
@@ -19,13 +18,13 @@ const dayTimesTemplateObj = [
   {key: 'alotHashahar90', title: 'עלות השחר 90 דקות'},
   {key: 'alotHashahar72', title: 'עלות השחרת 72 דקות'},
   {key: 'misheyakir', title: 'זמן משיכיר'},
-  {key: 'sunrise', title: 'זריחה (הנץ)'},
-  {key: 'sofZmanShma', title: 'סוף זמן ק"ש'},
-  {key: 'sofZmanTfila', title: 'סוף זמן תפילה'},
-  {key: 'hazot', title: 'חצות היום והלילה'},
-  {key: 'minhaGdola', title: 'מנחה גדולה'},
-  {key: 'minhaKtana', title: 'מנחה קטנה'},
-  {key: 'plagMinha', title: 'פלג מנחה'},
+  {key: 'sunrise', title: 'זריחה (הנץ)', inDay: true},
+  {key: 'sofZmanShma', title: 'סוף זמן ק"ש', inDay: true},
+  {key: 'sofZmanTfila', title: 'סוף זמן תפילה', inDay: true},
+  {key: 'hazot', title: 'חצות היום והלילה', inDay: true},
+  {key: 'minhaGdola', title: 'מנחה גדולה', inDay: true},
+  {key: 'minhaKtana', title: 'מנחה קטנה', inDay: true},
+  {key: 'plagMinha', title: 'פלג מנחה', inDay: true},
   {key: 'sunset', title: 'שקיעה'},
   {key: 'tzetHakohavim', title: 'צאת הכוכבים'},
   {key: 'tzetHakohavimRT', title: 'צאת הכוכבים ר"ת'},
@@ -131,7 +130,7 @@ export default class DayTimesApi extends BaseApi {
       formattedDate: `${selectedDate.getDate()} ${
         monthsArray[selectedDate.getMonth()]
       } ${isShort ? '' : selectedDate.getFullYear()}`,
-      formattedDateHe: `${Hebcal.gematriya(heDate.day)} ${
+      formattedDateHe: `יום ${heDaysLong[selectedDate.getDay()]}, ${Hebcal.gematriya(heDate.day)} ${
         monthsArrayHe[heDate.month - 1]
       } ${isShort ? '' : Hebcal.gematriya(heDate.year)}`,
       event,
@@ -207,58 +206,40 @@ export default class DayTimesApi extends BaseApi {
     return events;
   };
 
+  onSearchMyLocation = () => {
+    const successCallback = (location) => {
+      localStorage.setItem('prevLocation', JSON.stringify(location));
+      this.onSelectLocation(location);
+    };
+    const errorCallback = (error) => console.log(error);
+    this.APIsInstances.SearchLocationApi.searchMyLocation(successCallback, errorCallback);
+  }
+
   onSelectLocation = async location => {
     this.setSelectedLocation(location);
     await this.loadSunTimes(location.coords);
   };
 
-  // initialDate = () => {
-  //   const navigationDate = new Date();
-  //   navigationDate.setHours(6);
-  //   this.setSelectedDate(navigationDate);
-  //   this.setNavigationDate(navigationDate);
-  // };
-
-  setErrorMsg = () => {};
-
-  existLocationInStorage = () => {
+  getExistLocationFromStorage = () => {
     const existingLocation = localStorage.getItem('prevLocation');
     if (existingLocation) {
-      const location = JSON.parse(existingLocation);
-      this.onSelectLocation(location);
-      return true;
+      return JSON.parse(existingLocation);
     }
     return false;
   }
 
   loadSunTimesCurrentLocation = async () => {
-    //this.initialDate();
-    let defaultLocation = {
-      latitude: 31.0579367,
-      longitude: 35.0389234,
-    };
-    if (config.useMocks) {
-      this.APIsInstances.SearchLocationApi.getCityLocationByCoords(defaultLocation).then(this.onSelectLocation);
-    } else if (!this.existLocationInStorage()) {
-      const status = 'geolocation' in navigator;
-      if (!status) {
-        this.setErrorMsg('Permission to access location was denied');
-      } else {
-        navigator.geolocation.getCurrentPosition(location => {
-          this.APIsInstances.SearchLocationApi.getCityLocationByCoords(
-            location.coords,
-          ).then((loc) => {
-            localStorage.setItem('prevLocation', JSON.stringify(loc));
-            this.onSelectLocation(loc);
-          });
-        });
-      }
+    this.setSelectedDate(new Date());
+    const existingLocationFromStorage = this.getExistLocationFromStorage();
+    if (existingLocationFromStorage) {
+      await this.onSelectLocation(existingLocationFromStorage);
+    } else {
+      this.onSearchMyLocation();
     }
   };
 
   onDateChange = async selectedDate => {
     this.setSelectedDate(selectedDate);
-    this.setNavigationDate(selectedDate);
     const location = this.getSelectedLocationSelector();
     if (location && location.coords) {
       await this.loadSunTimes(location.coords, selectedDate);

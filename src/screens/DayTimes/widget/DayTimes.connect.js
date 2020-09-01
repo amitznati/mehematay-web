@@ -23,7 +23,8 @@ const mapDispatchToProps = () => ({
   setSelectedDate: dayTimesApi.onDateChange,
   setNavigationDate: dayTimesApi.setNavigationDate,
   startSpinner: dayTimesApi.startSpinner,
-  stopSpinner: dayTimesApi.stopSpinner
+  stopSpinner: dayTimesApi.stopSpinner,
+  onSearchMyLocation: dayTimesApi.onSearchMyLocation
 });
 
 export default connect(
